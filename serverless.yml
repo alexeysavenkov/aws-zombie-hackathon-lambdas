@@ -54,6 +54,9 @@ functions:
           method: get
           cors: true
 
+  # contactsAdd:
+  #   handler: controller
+
 
   # chatsGet:
   #   handler: controllerChat.get
