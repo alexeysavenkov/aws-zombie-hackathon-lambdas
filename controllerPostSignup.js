@@ -4,19 +4,20 @@ import { success, failure } from './libs/response-lib';
 
 export async function main(event, context) {
 
-  var phone = event.request.userAttributes.phone_number
+  var userId = event.request.userAttributes.sub
+  var email = event.request.userAttributes.email
 
-  console.log(event)
-  console.log(context)
+  console.log(event.request.userAttributes)
+  console.log('kek', userId, email)
 
   const params = {
     TableName: 'User',
     Item: {
-      id: uuid.v1(),
-      phone: phone,
-      username: phone,
-      contacts: [],
-      chatIds: []
+      id: userId,
+      email: email,
+      username: email,
+      contacts: {"NS": []},
+      chatIds: {"NS": []}
     },
   };
 
