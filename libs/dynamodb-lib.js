@@ -7,3 +7,18 @@ export async function call(action, params) {
 
   return dynamoDb[action](params).promise();
 }
+
+export function createSet(arr) {
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
+  return dynamoDb.createSet(arr)
+}
+
+export function emptyStringSet() {
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
+  var set = dynamoDb.createSet('')
+  set.values = [];
+
+  return set;
+}

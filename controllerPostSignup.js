@@ -10,14 +10,14 @@ export async function main(event, context) {
   console.log(event.request.userAttributes)
   console.log('kek', userId, email)
 
+  console.log('set', dynamoDbLib.createSet([""]))
+
   const params = {
     TableName: 'User',
     Item: {
       id: userId,
       email: email,
-      username: email,
-      contacts: {"NS": []},
-      chatIds: {"NS": []}
+      username: email
     },
   };
 

@@ -55,14 +55,15 @@ export async function add(event, context, callback) {
       },
       UpdateExpression: "ADD contacts :contact",
       ExpressionAttributeValues: {
-          ":contact": [newContactId]
-      }
+          ":contact": dynamoDbLib.createSet([newContactId])
+      },
+      ReturnValues: "ALL_NEW"
   };
 
   try {
-    const userResult = await dynamoDbLib.call('scan', userParams);
+    const userResult = await dynamoDbLib.call('update', userParams);
     console.log('userResult', userResult)
-    const users = userResult.Items
+    const users = userResult.Attributes
     console.log('users', users)
     if (users) {
       // Return the retrieved item
@@ -73,6 +74,7 @@ export async function add(event, context, callback) {
     }
   }
   catch(e) {
+    console.log('error', e)
     callback(null, failure({status: false}));
   }
 }
@@ -95,14 +97,15 @@ export async function remove(event, context, callback) {
       },
       UpdateExpression: "REMOVE contacts :contact",
       ExpressionAttributeValues: {
-          ":contact": [newContactId]
-      }
+          ":contact": dynamoDbLib.createSet([newContactId])
+      },
+      ReturnValues: "ALL_NEW"
   };
 
   try {
     const userResult = await dynamoDbLib.call('scan', userParams);
     console.log('userResult', userResult)
-    const users = userResult.Items
+    const users = userResult.Attributes
     console.log('users', users)
     if (users) {
       // Return the retrieved item
