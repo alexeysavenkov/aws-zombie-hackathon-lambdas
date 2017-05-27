@@ -1,4 +1,4 @@
-service: aws-zombie-app2
+service: aws-zombie-hackathon
 
 plugins:
   - serverless-webpack
@@ -6,7 +6,7 @@ plugins:
 
 custom:
   webpackIncludeModules: true
-  s3Bucket: aws-zombie-app2
+  s3Bucket: aws-zombie-hackathon
 
 provider:
   name: aws
@@ -43,8 +43,8 @@ functions:
           path: postSignup
           method: get
           cors: true
-          authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+          # authorizer:
+          #   arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_0zIfyLNBa
 
   chatsGet:
     handler: controllerChat.get
@@ -53,8 +53,8 @@ functions:
           path: chats
           method: get
           cors: true
-          authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+          # authorizer:
+          #   arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_0zIfyLNBa
 
   chatsDelete:
     handler: controllerChat.delete
@@ -63,8 +63,8 @@ functions:
           path: chat/{chatId}
           method: delete
           cors: true
-          authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+          # authorizer:
+          #   arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_0zIfyLNBa
 
   # postSignup:
   #   handler: controllerPostSignup.main
@@ -122,22 +122,22 @@ resources:
               Action:
               - s3:GetObject
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
-    DynamoDbTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: my-table
-        AttributeDefinitions:
-          - AttributeName: my_key
-            AttributeType: S
-        KeySchema:
-          - AttributeName: my_key
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+    # DynamoDbTableUser:
+    #   Type: AWS::DynamoDB::Table
+    #   Properties:
+    #     TableName: User
+    #     AttributeDefinitions:
+    #       - AttributeName: id
+    #         AttributeType: S
+    #     KeySchema:
+    #       - AttributeName: id
+    #         KeyType: HASH
+    #     ProvisionedThroughput:
+    #       ReadCapacityUnits: 5
+    #       WriteCapacityUnits: 5
     DynamoDBIamPolicy:
       Type: AWS::IAM::Policy
-      DependsOn: DynamoDbTable
+      # DependsOn: DynamoDbTableUser
       Properties:
         PolicyName: lambda-dynamodb
         PolicyDocument:

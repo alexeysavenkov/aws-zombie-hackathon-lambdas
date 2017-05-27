@@ -12,10 +12,11 @@ export async function main(event, context) {
   const params = {
     TableName: 'User',
     Item: {
-      id: 123,
+      id: uuid.v1(),
       phone: phone,
       username: phone,
-      contacts: []
+      contacts: [],
+      chatIds: []
     },
   };
 
