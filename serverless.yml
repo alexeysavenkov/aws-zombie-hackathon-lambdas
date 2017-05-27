@@ -44,7 +44,7 @@ functions:
           method: post
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_aLzk87ZyX
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 
   get:
     # Defines an HTTP API endpoint that calls the main function in get.js
@@ -57,7 +57,7 @@ functions:
           method: get
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_aLzk87ZyX
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 
   list:
     # Defines an HTTP API endpoint that calls the main function in list.js
@@ -70,7 +70,7 @@ functions:
           method: get
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_aLzk87ZyX
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 
   update:
     # Defines an HTTP API endpoint that calls the main function in update.js
@@ -83,7 +83,7 @@ functions:
           method: put
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_aLzk87ZyX
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 
   delete:
     # Defines an HTTP API endpoint that calls the main function in delete.js
@@ -96,7 +96,7 @@ functions:
           method: delete
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_aLzk87ZyX
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 resources:
   Resources:
     ## Specifying the S3 Bucket
