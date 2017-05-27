@@ -36,67 +36,67 @@ functions:
   #     domain api call
   # - authorizer: authenticate the api via Cognito User Pool. Update the 'arn'
   #     with your own User Pool ARN
-  create:
-    handler: create.main
+  postSignup:
+    handler: controllerPostSignup.main
     events:
       - http:
-          path: notes
-          method: post
-          cors: true
-          authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
-
-  get:
-    # Defines an HTTP API endpoint that calls the main function in get.js
-    # - path: url path is /notes/{id}
-    # - method: GET request
-    handler: get.main
-    events:
-      - http:
-          path: notes/{id}
+          path: postSignup
           method: get
           cors: true
           authorizer:
             arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 
-  list:
-    # Defines an HTTP API endpoint that calls the main function in list.js
-    # - path: url path is /notes
-    # - method: GET request
-    handler: list.main
+  chatsGet:
+    handler: controllerChat.get
     events:
       - http:
-          path: notes
+          path: chats
           method: get
           cors: true
           authorizer:
             arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
 
-  update:
-    # Defines an HTTP API endpoint that calls the main function in update.js
-    # - path: url path is /notes/{id}
-    # - method: PUT request
-    handler: update.main
+  chatsDelete:
+    handler: controllerChat.delete
     events:
       - http:
-          path: notes/{id}
-          method: put
-          cors: true
-          authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
-
-  delete:
-    # Defines an HTTP API endpoint that calls the main function in delete.js
-    # - path: url path is /notes/{id}
-    # - method: DELETE request
-    handler: delete.main
-    events:
-      - http:
-          path: notes/{id}
+          path: chat/{chatId}
           method: delete
           cors: true
           authorizer:
             arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+
+  # postSignup:
+  #   handler: controllerPostSignup.main
+  #   events:
+  #     - http:
+  #         path: postSignup
+  #         method: get
+  #         cors: true
+  #         authorizer:
+  #           arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+
+  # postSignup:
+  #   handler: controllerPostSignup.main
+  #   events:
+  #     - http:
+  #         path: postSignup
+  #         method: get
+  #         cors: true
+  #         authorizer:
+  #           arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+
+  # postSignup:
+  #   handler: controllerPostSignup.main
+  #   events:
+  #     - http:
+  #         path: postSignup
+  #         method: get
+  #         cors: true
+  #         authorizer:
+  #           arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_lwp8OxFG8
+  
+
 resources:
   Resources:
     ## Specifying the S3 Bucket
@@ -122,3 +122,31 @@ resources:
               Action:
               - s3:GetObject
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    DynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: my-table
+        AttributeDefinitions:
+          - AttributeName: my_key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: my_key
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    DynamoDBIamPolicy:
+      Type: AWS::IAM::Policy
+      DependsOn: DynamoDbTable
+      Properties:
+        PolicyName: lambda-dynamodb
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+              Resource: arn:aws:dynamodb:*:*:*/*
+        Roles:
+          - Ref: IamRoleLambdaExecution
