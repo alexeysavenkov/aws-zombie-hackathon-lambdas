@@ -46,23 +46,32 @@ functions:
           # authorizer:
           #   arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_0zIfyLNBa
 
-  chatsGet:
-    handler: controllerChat.get
+  contactsSearch:
+    handler: controllerContacts.search
     events:
       - http:
-          path: chats
+          path: contacts/search/{query}
           method: get
           cors: true
+
+
+  # chatsGet:
+  #   handler: controllerChat.get
+  #   events:
+  #     - http:
+  #         path: chats
+  #         method: get
+  #         cors: true
           # authorizer:
           #   arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_0zIfyLNBa
 
-  chatsDelete:
-    handler: controllerChat.delete
-    events:
-      - http:
-          path: chat/{chatId}
-          method: delete
-          cors: true
+  # chatsDelete:
+  #   handler: controllerChat.delete
+  #   events:
+  #     - http:
+  #         path: chat/{chatId}
+  #         method: delete
+  #         cors: true
           # authorizer:
           #   arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_0zIfyLNBa
 
