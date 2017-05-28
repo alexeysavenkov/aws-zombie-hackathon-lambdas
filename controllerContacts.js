@@ -50,6 +50,8 @@ export async function manip(event, context, callback) {
 
       var userId = event.requestContext.authorizer.claims.sub
 
+      console.log('userId', userId)
+
       const userParams = {
         TableName: 'User',
         Key: {
@@ -58,17 +60,22 @@ export async function manip(event, context, callback) {
       };
 
       try {
-        const userResult = dynamoDbLib.call('get', userParams);
+        const userResult = await dynamoDbLib.call('get', userParams);
         const user = userResult.Item
-        console.log(user)
+        console.log(userResult)
         if (user) {
-          const contactIds = user.contacts || []
+          const contactIds = (user.contacts || {values: []}).values
+
+          console.log('contactIds', user.contacts, contactIds)
 
           const contactParams = {
-            TableName: 'Contact',
-            Key: {
-              id: contactIds
-            },
+            TableName: 'User',
+            ScanFilter: {
+              "id": {
+                AttributeValueList: contactIds,
+                ComparisonOperator: "IN"
+              }
+            }
           };
 
           if(contactIds.length == 0) {

@@ -14,17 +14,22 @@ export async function get(event, context, callback) {
   };
 
   try {
-    const userResult = dynamoDbLib.call('get', userParams);
+    const userResult = await dynamoDbLib.call('get', userParams);
     const user = userResult.Item
-    console.log(user)
+    console.log(userResult)
     if (user) {
-      const chatIds = user.chatIds || []
+      const chatIds = (user.chatIds || {values: []}).values
+
+      console.log('chatIds', user.chatIds, chatIds)
 
       const chatParams = {
         TableName: 'Chat',
-        Key: {
-          id: chatIds
-        },
+        ScanFilter: {
+          "id": {
+            AttributeValueList: chatIds,
+            ComparisonOperator: "IN"
+          }
+        }
       };
 
       if(chatIds.length == 0) {
@@ -50,7 +55,7 @@ export async function get(event, context, callback) {
 }
 
 
-export function _delete(event, context, callback) {
+export function remove(event, context, callback) {
 
   const chatIdToDelete = event.pathParameters['chatId']
 
