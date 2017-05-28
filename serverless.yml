@@ -51,13 +51,25 @@ functions:
           path: contacts/search/{query}
           method: get
           cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_GLfi27cfZ
 
-  contactsAdd:
-    handler: controllerContacts.add
+  contacts:
+    handler: controllerContacts.manip
     events:
       - http:
-          path: contacts/{newContactId}
-          method: put
+          path: contacts/{contactId}
+          method: any
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_GLfi27cfZ
+
+  chats:
+    handler: controllerChats.get
+    events:
+      - http:
+          path: chats
+          method: get
           cors: true
           authorizer:
             arn: arn:aws:cognito-idp:eu-central-1:650194926406:userpool/eu-central-1_GLfi27cfZ

@@ -2,17 +2,19 @@ import uuid from 'uuid';
 import * as dynamoDbLib from './libs/dynamodb-lib';
 import { success, failure } from './libs/response-lib';
 
-export function get(event, context, callback) {
+export async function get(event, context, callback) {
+
+  var userId = event.requestContext.authorizer.claims.sub
 
   const userParams = {
     TableName: 'User',
     Key: {
-      id: event.request.userAttributes.sub
-    },
+      id: userId
+    }
   };
 
   try {
-    const userResult = dynamoDbLib.call('get', params);
+    const userResult = dynamoDbLib.call('get', userParams);
     const user = userResult.Item
     console.log(user)
     if (user) {
@@ -25,18 +27,24 @@ export function get(event, context, callback) {
         },
       };
 
-      const chatsResult = dynamoDbLib.call('get', params);
+      if(chatIds.length == 0) {
+        callback(null, success([]));
+        return;
+      }
+
+      const chatsResult = await dynamoDbLib.call('scan', chatParams);
 
       console.log(chatsResult)
 
       // Return the retrieved item
-      callback(null, success(chatsResult.Item));
+      callback(null, success(chatsResult.Items));
     }
     else {
-      callback(null, failure({status: false, error: 'Item not found.'}));
+      callback(null, success([]));
     }
   }
   catch(e) {
+    console.log(e)
     callback(null, failure({status: false}));
   }
 }
